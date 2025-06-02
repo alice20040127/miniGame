@@ -232,7 +232,7 @@ async function shoot(angle, power, dmg) {
     const gameAreaRect = gameArea.getBoundingClientRect();
 
     let x = aimRect.left + aimRect.width / 2 - gameAreaRect.left;
-    let y = gameAreaRect.bottom - aimRect.bottom - aimRect.height / 2;
+    let y = 40;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
