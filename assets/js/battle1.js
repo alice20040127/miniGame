@@ -24,6 +24,27 @@ let dragStart = null;
 let playerHasActed = false;
 let skillCooldown = 5;
 
+const enemyImages = [
+    './assets/img/enemy/enemy1.png',
+    './assets/img/enemy/enemy2.png',
+    './assets/img/enemy/enemy3.png'
+  ];
+
+  const randomIndex = Math.floor(Math.random() * enemyImages.length);
+  const chosenImage = enemyImages[randomIndex];
+
+  const img = document.createElement('img');
+  img.src = chosenImage;
+  img.alt = '敵人';
+  img.id = 'enemyImg';
+  img.style.width = '40px';
+  img.style.height = '40px';
+  img.style.objectFit = 'contain';
+  img.style.display = 'block';
+
+  const enemyDiv = document.getElementById('enemy');
+  enemyDiv.insertBefore(img, enemyDiv.firstChild);
+
 async function loadPlayerData() {
     const snapshot = await db.ref('characters/player1').once('value');
     if (snapshot.exists()) {
