@@ -1,4 +1,10 @@
 import { db } from './firebaseConfig.js'; // 這裡的 db 是 firebase.database()，不是 getFirestore()
+import {
+  ref,
+  get,
+  set,
+  child
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 async function createCharacter() {
     const name = document.getElementById("playerName").value.trim();
