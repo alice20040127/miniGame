@@ -1,4 +1,10 @@
 import { db } from './firebaseConfig.js';
+import {
+  ref,
+  get,
+  set,
+  child
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 async function loadCharacterData() {
     const name = localStorage.getItem("playerName");
