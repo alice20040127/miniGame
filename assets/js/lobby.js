@@ -26,7 +26,7 @@ async function loadCharacterData() {
         const hardBtn = document.getElementById("hardBtn");
 
         playerNameOnPhoto.textContent = name; // 注意：這裡用的是 localStorage 中的 name
-        playerPhoto.src = "css/images/role1.jpg";
+        playerPhoto.src = "css/images/role-1.jpg";
 
         startGameBtn.addEventListener("click", () => {
             difficultyButtons.style.display = "block";
