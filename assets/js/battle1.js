@@ -165,7 +165,7 @@ gameArea.addEventListener('mousemove', (e) => {
     const playerX = player.offsetLeft + 20;
     const aimBottom = 40;
     const dx = e.offsetX - playerX;
-    const dy = player.offsetTop + 20 - e.offsetY;
+    const dy = e.offsetY - (player.offsetTop + 20);
 
     let angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
     angleDeg = Math.max(0, Math.min(90, angleDeg));
