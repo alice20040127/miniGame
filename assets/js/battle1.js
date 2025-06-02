@@ -226,7 +226,7 @@ gameArea.addEventListener('mouseup', (e) => {
 
 async function shoot(angle, power, dmg) {
     const rad = angle * Math.PI / 180;
-    const vx = power * powerScale * Math.cos(rad);
+    const vx = power * powerScale * Math.cos(rad)+20;
     const vy = power * powerScale * Math.sin(rad);
     let x = player.offsetLeft + 20;
     let y = 40;
