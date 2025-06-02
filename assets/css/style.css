@@ -41,12 +41,12 @@ body {
   display: block;
 }
 
-#playerImg {
+#player {
   left: 50px;
   z-index: 5;
 }
 
-#enemyImg {
+#enemy {
   left: 450px;
   z-index: 5;
 }
