@@ -82,16 +82,18 @@
     .statRow {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 20px;
       font-size: 18px;
     }
     .statName {
       flex: 1;
+      user-select: none;
     }
     .statValue {
       width: 80px;
       text-align: center;
       font-weight: bold;
+      user-select: none;
     }
     .enhanceBtn {
       padding: 6px 12px;
@@ -102,6 +104,7 @@
       border-radius: 5px;
       transition: background-color 0.3s;
       user-select: none;
+      min-width: 80px;
     }
     .enhanceBtn:disabled {
       background-color: #ccc;
@@ -111,6 +114,8 @@
       color: red;
       font-weight: bold;
       font-size: 16px;
+      min-width: 90px;
+      user-select: none;
     }
   </style>
 </head>
