@@ -20,15 +20,29 @@ body {
 }
 
 #gameArea {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  height: 300px;
-  background: #d0e7ff;
-  border: 2px solid #3399ff;
-  margin: 20px 0;
-  overflow: hidden;
-  user-select: none;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+#gameArea::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('../images/bg-battle.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3; /* 控制淡化程度 */
+    z-index: 0;
+    pointer-events: none;
+}
+
+#gameArea > * {
+    position: relative;
+    z-index: 1;
 }
 
 #player, #enemy {
