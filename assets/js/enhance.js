@@ -18,7 +18,6 @@ const stats = {
 const enhanceCost = 10;
 let coins = 0;
 
-const db = window.db;
 const playerRef = db.ref("players/" + name);
 
 function updateDisplay() {
