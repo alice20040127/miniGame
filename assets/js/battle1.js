@@ -225,25 +225,24 @@ gameArea.addEventListener('mouseup', (e) => {
 });
 
 async function shoot(angle, power, dmg) {
-    const rad = angle * Math.PI / 180;
-    const vx = power * powerScale * Math.cos(rad);
-    const vy = power * powerScale * Math.sin(rad);
+      const rad = angle * Math.PI / 180;
+      const velocityX = power * Math.cos(rad) * 0.5;
+      const maxHeight = 100;
+      const totalTime = 3;
+      const startX = parseFloat(player.style.left);
+      let x = startX;
+      let y = 0;
+      projectile.style.display = "block";
+      projectile.style.left = x + "px";
+      projectile.style.bottom = y + "px";
+      let t = 0;
 
-    let x = player.offsetLeft + 20;
-    let y = 0;
-    
-    projectile.style.display = "block";
-    projectile.style.left = x + "px";
-    projectile.style.bottom = y + "px";
-    let t = 0;
-
-    const interval = setInterval(async () => {
+      const interval = setInterval(() => {
         t += 0.1;
-        const windForce = wind * 0.3;
-        const px = x + vx * t + windForce * t;
-        const py = y + vy * t - 0.5 * gravity * t * t;
-        projectile.style.left = px + "px";
-        projectile.style.bottom = py + "px";
+        x = startX + velocityX * t + wind * 5 * t;
+        y = -4 * maxHeight / (totalTime * totalTime) * Math.pow(t - totalTime / 2, 2) + maxHeight;
+        projectile.style.left = x + "px";
+        projectile.style.bottom = y + "px";
 
         const dx = px - (parseFloat(enemy.style.left) + 20);
         const dy = py - 20;
@@ -277,7 +276,7 @@ async function shoot(angle, power, dmg) {
 
 async function fireSkillBullet() {
     let x = player.offsetLeft + 20;
-    let y = 0;
+    let y = 40;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
