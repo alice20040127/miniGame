@@ -24,33 +24,75 @@ let dragStart = null;
 let playerHasActed = false;
 let skillCooldown = 5;
 
+const roleImage = './assets/img/role/role-2.png';
+player.style.backgroundImage = `url('${roleImage}')`;
+
+const enemyImages = [
+    './assets/img/enemy/enemy1.png',
+    './assets/img/enemy/enemy2.png',
+    './assets/img/enemy/enemy3.png'
+  ];
+
+const chosenImage = enemyImages[Math.floor(Math.random() * enemyImages.length)];
+enemy.style.backgroundImage = `url('${chosenImage}')`;
+
 async function loadPlayerData() {
-    const snapshot = await get(ref(db, 'characters/player1'));
-    if (snapshot.exists()) {
+    const name = localStorage.getItem("playerName");
+    if (!name) {
+        alert("找不到登入資訊，請重新建立角色！");
+        window.location.href = "create.html";
+        return;
+    }
+
+    const playerRef = firebase.database().ref("players/" + name);
+    playerRef.once("value").then(snapshot => {
+        if (!snapshot.exists()) {
+            alert("找不到角色資料，請重新建立！");
+            window.location.href = "create.html";
+            return;
+        }
+
         const data = snapshot.val();
+        console.log("角色資料：", data);
+
+        // 將角色資料設置到遊戲參數
         playerHP = data.hp;
         powerScale = data.strength;
         damage = data.damage;
         skillDamage = data.skillDamage;
         movement = data.movement;
+
+        // 更新血量條顯示
         playerHPBar.style.width = playerHP + "%";
-    } else {
-        console.error("找不到角色資料");
-    }
+    }).catch(error => {
+        console.error("載入角色資料時出錯：", error);
+        alert("發生錯誤，請稍後再試！");
+    });
 }
 
 loadPlayerData();
 setTurn(true);
 
 async function updateCoins(amount) {
-    const charRef = ref(db, 'characters/player1');
-    const snapshot = await get(charRef);
+    const name = localStorage.getItem("playerName");
+    if (!name) {
+        alert("找不到登入資訊，請重新登入！");
+        window.location.href = "create.html";
+        return;
+    }
+
+    const charRef = firebase.database().ref('players/' + name);
+    const snapshot = await charRef.once('value');
     if (snapshot.exists()) {
         const currentData = snapshot.val();
         const newCoins = (currentData.coins || 0) + amount;
-        await set(charRef, { ...currentData, coins: newCoins });
+        await charRef.update({ coins: newCoins });
+    } else {
+        alert("找不到角色資料，請重新建立！");
+        window.location.href = "create.html";
     }
 }
+
 
 let windDirection = "⭤";
 let windColor = "black";
@@ -115,12 +157,6 @@ gameArea.addEventListener('mousedown', (e) => {
     dragPower = 0;
     increasing = true;
 
-    aimLine.style.display = 'block';
-    aimLine.style.left = player.offsetLeft + 20 + 'px';
-    aimLine.style.bottom = '40px';
-    aimLine.style.width = '100px';
-
-    angleDisplay.style.display = 'block';
     powerBar.style.width = '0%';
     powerBar.style.backgroundColor = "blue";
     powerBar.style.display = "block";
@@ -141,18 +177,28 @@ gameArea.addEventListener('mousedown', (e) => {
 gameArea.addEventListener('mousemove', (e) => {
     if (!dragStart || !isPlayerTurn || playerHasActed) return;
 
-    const playerX = player.offsetLeft + 20;
-    const aimBottom = 40;
-    const dx = e.offsetX - playerX;
-    const dy = player.offsetTop + 20 - e.offsetY;
+    const rect = gameArea.getBoundingClientRect();
+    const centerX = parseFloat(player.style.left) + 20;
+    const centerY = rect.bottom - 20;
+    const dx = e.clientX - rect.left - centerX;
+    const dy = centerY - e.clientY;
+    const rad = Math.atan2(dy, dx);
+    currentAngle = rad * 180 / Math.PI;
+    currentAngle = Math.max(0, Math.min(90, currentAngle));
 
-    let angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
-    angleDeg = Math.max(0, Math.min(90, angleDeg));
+    aimLine.style.display = 'block';
+    angleDisplay.style.display = 'block';
 
-    aimLine.style.transform = `rotate(${angleDeg}deg)`;
-    angleDisplay.innerText = `${Math.round(angleDeg)}°`;
-    angleDisplay.style.left = (playerX + 10) + 'px';
-    angleDisplay.style.bottom = (aimBottom + 40) + 'px';
+      // 瞄準線更新
+      aimLine.style.left = centerX + "px";
+      aimLine.style.bottom = "40px";
+      aimLine.style.transform = `rotate(${-currentAngle}deg)`;
+      aimLine.style.width = "100px";
+
+      // 角度顯示位置與數值
+      angleDisplay.innerText = `${Math.round(currentAngle)}°`;
+      angleDisplay.style.left = (centerX + 110 * Math.cos(rad)) + "px";
+      angleDisplay.style.bottom = (40 + 110 * Math.sin(rad)) + "px";
 });
 
 gameArea.addEventListener('mouseup', (e) => {
@@ -180,8 +226,8 @@ gameArea.addEventListener('mouseup', (e) => {
 
 async function shoot(angle, power, dmg) {
     const rad = angle * Math.PI / 180;
-    const vx = power * powerScale * Math.cos(rad);
-    const vy = power * powerScale * Math.sin(rad);
+    const vx = power * powerScale * Math.cos(rad)+20;
+    const vy = power * powerScale * Math.sin(rad)+20;
     let x = player.offsetLeft + 20;
     let y = 40;
     projectile.style.display = "block";
@@ -196,7 +242,7 @@ async function shoot(angle, power, dmg) {
         const py = y + vy * t - 0.5 * gravity * t * t;
         projectile.style.left = px + "px";
         projectile.style.bottom = py + "px";
-
+          
         const dx = px - (parseFloat(enemy.style.left) + 20);
         const dy = py - 20;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -230,6 +276,7 @@ async function shoot(angle, power, dmg) {
 async function fireSkillBullet() {
     let x = player.offsetLeft + 20;
     let y = 40;
+    
     projectile.style.display = "block";
     projectile.style.left = x + "px";
     projectile.style.bottom = y + "px";
