@@ -31,7 +31,7 @@ body {
   user-select: none;
 }
 
-#playerImg, #enemyImg {
+#player, #enemy {
   position: absolute;
   bottom: 0;
   width: 40px;
@@ -39,11 +39,15 @@ body {
   border-radius: 5px;
   object-fit: contain;
   display: block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   z-index: 5;
 }
 
-#playerImg {
+#player {
   left: 50px;
+  background-image: url('./assets/img/role/role-2.png');
 }
 
 #enemyImg {
