@@ -54,3 +54,8 @@ async function createCharacter() {
         alert("角色創建失敗，請稍後再試！");
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('button');
+    button.addEventListener('click', createCharacter);
+});
