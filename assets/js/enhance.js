@@ -1,125 +1,105 @@
 const name = localStorage.getItem("playerName");
 if (!name) {
-    alert("請先創建角色！");
-    window.location.href = "create.html";
+  alert("請先創建角色！");
+  window.location.href = "create.html";
 }
 
-// 元素參考
 const coinDisplay = document.getElementById("coinDisplay");
 const backBtn = document.getElementById("backBtn");
 
-// 屬性按鈕與值
 const stats = {
-    hp: { valueEl: document.getElementById("hpValue"), btnEl: document.getElementById("hpEnhanceBtn"), limitEl: document.getElementById("hpLimit"), baseValue: 0, increments: 20 },
-    strength: { valueEl: document.getElementById("strengthValue"), btnEl: document.getElementById("strengthEnhanceBtn"), limitEl: document.getElementById("strengthLimit"), baseValue: 0, increments: 0.05 },
-    damage: { valueEl: document.getElementById("damageValue"), btnEl: document.getElementById("damageEnhanceBtn"), limitEl: document.getElementById("damageLimit"), baseValue: 0, increments: 5 },
-    skillDamage: { valueEl: document.getElementById("skillDamageValue"), btnEl: document.getElementById("skillDamageEnhanceBtn"), limitEl: document.getElementById("skillDamageLimit"), baseValue: 0, increments: 5 },
-    movement: { valueEl: document.getElementById("movementValue"), btnEl: document.getElementById("movementEnhanceBtn"), limitEl: document.getElementById("movementLimit"), baseValue: 0, increments: 1 },
+  hp: { valueEl: document.getElementById("hpValue"), btnEl: document.getElementById("hpEnhanceBtn"), limitEl: document.getElementById("hpLimit"), baseValue: 100, increments: 20, max: 300 },
+  strength: { valueEl: document.getElementById("strengthValue"), btnEl: document.getElementById("strengthEnhanceBtn"), limitEl: document.getElementById("strengthLimit"), baseValue: 0.5, increments: 0.05, max: 1.0 },
+  damage: { valueEl: document.getElementById("damageValue"), btnEl: document.getElementById("damageEnhanceBtn"), limitEl: document.getElementById("damageLimit"), baseValue: 20, increments: 3, max: 50 },
+  skillDamage: { valueEl: document.getElementById("skillDamageValue"), btnEl: document.getElementById("skillDamageEnhanceBtn"), limitEl: document.getElementById("skillDamageLimit"), baseValue: 50, increments: 5, max: 100 },
+  movement: { valueEl: document.getElementById("movementValue"), btnEl: document.getElementById("movementEnhanceBtn"), limitEl: document.getElementById("movementLimit"), baseValue: 20, increments: 1, max: 30 },
 };
 
-const maxEnhance = 10;
 const enhanceCost = 10;
-
-let coin = 0;
-let enhanceCounts = {
-    hp: 0,
-    strength: 0,
-    damage: 0,
-    skillDamage: 0,
-    movement: 0
-};
+let coins = 0;
 
 const db = firebase.database();
 const playerRef = db.ref("players/" + name);
 
 function updateDisplay() {
-  // 顯示金幣數量
-    coinDisplay.textContent = `金幣: ${coin}`;
+  coinDisplay.textContent = `金幣: ${coins}`;
 
-  // 更新各屬性數值及按鈕狀態
-    for (const key in stats) {
-        const stat = stats[key];
-        let displayValue = stat.baseValue;
+  for (const key in stats) {
+    const stat = stats[key];
+    let displayValue = stat.baseValue;
 
-        // 累積強化效果
-        displayValue += enhanceCounts[key] * stat.increments;
-
-        // 小數取2位
-        if (key === "strength") {
-            displayValue = displayValue.toFixed(2);
-        } else {
-            displayValue = Math.round(displayValue);
-        }
-
-        stat.valueEl.textContent = displayValue;
-
-        // 控制按鈕顯示
-        if (enhanceCounts[key] >= maxEnhance) {
-            stat.btnEl.style.display = "none";
-            stat.limitEl.style.display = "inline-block";
-        } else {
-            stat.btnEl.style.display = "inline-block";
-            stat.limitEl.style.display = "none";
-        }
+    if (key === "strength") {
+      displayValue = displayValue.toFixed(2);
+    } else {
+      displayValue = Math.round(displayValue);
     }
+    stat.valueEl.textContent = displayValue;
+
+    // 判斷是否達上限（只用 baseValue 和 max）
+    if (stat.baseValue >= stat.max) {
+      stat.btnEl.style.display = "none";
+      stat.limitEl.style.display = "inline-block";
+    } else {
+      stat.btnEl.style.display = "inline-block";
+      stat.limitEl.style.display = "none";
+    }
+  }
 }
 
-// 從 Firebase 讀取資料
+// 讀取玩家資料
 playerRef.once("value").then(snapshot => {
-    if (!snapshot.exists()) {
-        alert("找不到角色資料！");
-        window.location.href = "lobby.html";
-        return;
-    }
-    const data = snapshot.val();
-    coin = data.coin || 0;
+  if (!snapshot.exists()) {
+    alert("找不到角色資料！");
+    window.location.href = "lobby.html";
+    return;
+  }
+  const data = snapshot.val();
+  coins = data.coins || 0;
 
-  // 設定基礎屬性值
-    stats.hp.baseValue = data.hp || 0;
-    stats.strength.baseValue = data.strength || 0;
-    stats.damage.baseValue = data.damage || 0;
-    stats.skillDamage.baseValue = data.skillDamage || 0;
-    stats.movement.baseValue = data.movement || 0;
-
-    updateDisplay();
+  for (const key in stats) {
+    stats[key].baseValue = data[key] || stats[key].baseValue;
+  }
+  
+  updateDisplay();
 }).catch(error => {
-    console.error(error);
-    alert("讀取角色資料失敗！");
+  console.error(error);
+  alert("讀取角色資料失敗！");
 });
 
-// 按鈕點擊事件
 for (const key in stats) {
-    stats[key].btnEl.addEventListener("click", () => {
-    if (enhanceCounts[key] >= maxEnhance) return;
+  const stat = stats[key];
+  stat.btnEl.addEventListener("click", () => {
+    if (coins < enhanceCost) {
+      alert("金幣不足！");
+      return;
+    }
+    // 計算強化後的新值
+    const newValue = stat.baseValue + stat.increments;
 
-    if (coin < enhanceCost) {
-        alert("金幣不足！");
-        return;
+    if (newValue > stat.max) {
+      alert("已達強化上限！");
+      return;
     }
 
-    // 扣除金幣
-    coin -= enhanceCost;
-
-    // 強化次數+1
-    enhanceCounts[key]++;
+    coins -= enhanceCost;
+    stat.baseValue = newValue;
 
     // 更新 Firebase
-    const updateObj = {};
-    updateObj.coin = coin;
-    // 新屬性 = 原本baseValue + 累積強化量
-    updateObj[key] = stats[key].baseValue + enhanceCounts[key] * stats[key].increments;
+    const updateObj = {
+      coins: coins,
+      [key]: newValue,
+    };
 
     playerRef.update(updateObj).then(() => {
-        alert("強化成功！");
-        updateDisplay();
+      alert("強化成功！");
+      updateDisplay();
     }).catch(err => {
-        console.error(err);
-        alert("更新資料失敗！");
+      console.error(err);
+      alert("更新資料失敗！");
     });
-    });
+  });
 }
-
-// 返回大廳
+// 返回大廳按鈕
 backBtn.addEventListener("click", () => {
-    window.location.href = "lobby.html";
+  window.location.href = "lobby.html";
 });
