@@ -244,6 +244,9 @@ async function shoot(angle, power, dmg) {
         projectile.style.left = x + "px";
         projectile.style.bottom = y + "px";
 
+        const px = x + vx * t + windForce * t;
+        const py = y + vy * t - 0.5 * gravity * t * t;
+          
         const dx = px - (parseFloat(enemy.style.left) + 20);
         const dy = py - 20;
         const dist = Math.sqrt(dx * dx + dy * dy);
