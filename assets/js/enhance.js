@@ -19,15 +19,6 @@ const enhanceCost = 10;
 let coins = 0;
 
 const playerRef = firebase.database().ref("players/" + name);
-    playerRef.once("value").then(snapshot => {
-        if (!snapshot.exists()) {
-            alert("找不到角色資料，請重新建立！");
-            window.location.href = "create.html";
-            return;
-        }
-
-        const characterData = snapshot.val();
-        console.log("角色資料：", characterData);
       
 function updateDisplay() {
   coinDisplay.textContent = `金幣: ${coins}`;
