@@ -278,8 +278,8 @@ async function shoot(angle, power, dmg) {
 }
 
 async function fireSkillBullet() {
-    let x = player.offsetLeft + player.offsetWidth / 2;
-    let y = player.offsetTop + player.offsetHeight / 2;
+    let x = parseFloat(player.style.left);
+    let y = 40;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
