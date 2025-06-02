@@ -166,12 +166,6 @@ gameArea.addEventListener('mousedown', (e) => {
     dragPower = 0;
     increasing = true;
 
-    aimLine.style.display = 'block';
-    aimLine.style.left = player.offsetLeft + 20 + 'px';
-    aimLine.style.bottom = '40px';
-    aimLine.style.width = '100px';
-
-    angleDisplay.style.display = 'block';
     powerBar.style.width = '0%';
     powerBar.style.backgroundColor = "blue";
     powerBar.style.display = "block";
@@ -192,18 +186,25 @@ gameArea.addEventListener('mousedown', (e) => {
 gameArea.addEventListener('mousemove', (e) => {
     if (!dragStart || !isPlayerTurn || playerHasActed) return;
 
-    const playerX = player.offsetLeft + 20;
-    const aimBottom = 40;
-    const dx = e.offsetX - playerX;
-    const dy = e.offsetY - (player.offsetTop + 20);
+     const rect = gameArea.getBoundingClientRect();
+      const centerX = parseFloat(player.style.left) + 20;
+      const centerY = rect.bottom - 20;
+      const dx = e.clientX - rect.left - centerX;
+      const dy = centerY - e.clientY;
+      const rad = Math.atan2(dy, dx);
+      currentAngle = rad * 180 / Math.PI;
+      currentAngle = Math.max(0, Math.min(90, currentAngle));
 
-    let angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
-    angleDeg = Math.max(0, Math.min(90, angleDeg));
+      // 瞄準線更新
+      aimLine.style.left = centerX + "px";
+      aimLine.style.bottom = "40px";
+      aimLine.style.transform = `rotate(${-currentAngle}deg)`;
+      aimLine.style.width = "100px";
 
-    aimLine.style.transform = `rotate(${angleDeg}deg)`;
-    angleDisplay.innerText = `${Math.round(angleDeg)}°`;
-    angleDisplay.style.left = (playerX + 10) + 'px';
-    angleDisplay.style.bottom = (aimBottom + 40) + 'px';
+      // 角度顯示位置與數值
+      angleDisplay.innerText = `${Math.round(currentAngle)}°`;
+      angleDisplay.style.left = (centerX + 110 * Math.cos(rad)) + "px";
+      angleDisplay.style.bottom = (40 + 110 * Math.sin(rad)) + "px";
 });
 
 gameArea.addEventListener('mouseup', (e) => {
