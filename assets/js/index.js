@@ -1,4 +1,4 @@
-import { db } from './firebaseConfig.js'; // 這裡的 db 是 firebase.database()，不是 getFirestore()
+import { db } from './firebaseConfig.js';
 import {
   ref,
   get,
