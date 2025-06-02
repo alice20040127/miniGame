@@ -186,14 +186,17 @@ gameArea.addEventListener('mousedown', (e) => {
 gameArea.addEventListener('mousemove', (e) => {
     if (!dragStart || !isPlayerTurn || playerHasActed) return;
 
-     const rect = gameArea.getBoundingClientRect();
-      const centerX = parseFloat(player.style.left) + 20;
-      const centerY = rect.bottom - 20;
-      const dx = e.clientX - rect.left - centerX;
-      const dy = centerY - e.clientY;
-      const rad = Math.atan2(dy, dx);
-      currentAngle = rad * 180 / Math.PI;
-      currentAngle = Math.max(0, Math.min(90, currentAngle));
+    const rect = gameArea.getBoundingClientRect();
+    const centerX = parseFloat(player.style.left) + 20;
+    const centerY = rect.bottom - 20;
+    const dx = e.clientX - rect.left - centerX;
+    const dy = centerY - e.clientY;
+    const rad = Math.atan2(dy, dx);
+    currentAngle = rad * 180 / Math.PI;
+    currentAngle = Math.max(0, Math.min(90, currentAngle));
+
+    aimLine.style.display = 'block';
+    angleDisplay.style.display = 'block';
 
       // 瞄準線更新
       aimLine.style.left = centerX + "px";
@@ -234,8 +237,9 @@ async function shoot(angle, power, dmg) {
     const rad = angle * Math.PI / 180;
     const vx = power * powerScale * Math.cos(rad);
     const vy = power * powerScale * Math.sin(rad);
-    let x = player.offsetLeft + 20;
-    let y = 40;
+    let x = player.offsetLeft + player.offsetWidth / 2;
+    let y = player.offsetTop + player.offsetHeight / 2;
+    
     projectile.style.display = "block";
     projectile.style.left = x + "px";
     projectile.style.bottom = y + "px";
@@ -280,8 +284,9 @@ async function shoot(angle, power, dmg) {
 }
 
 async function fireSkillBullet() {
-    let x = player.offsetLeft + 20;
-    let y = 40;
+    let x = player.offsetLeft + player.offsetWidth / 2;
+    let y = player.offsetTop + player.offsetHeight / 2;
+    
     projectile.style.display = "block";
     projectile.style.left = x + "px";
     projectile.style.bottom = y + "px";
