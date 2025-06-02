@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-
 const firebaseConfig = {
     apiKey: "AIzaSyCiF88HRSwk5Oh7hHFhRbSrFIEgSFhUQNk",
     authDomain: "minigame-c4659.firebaseapp.com",
@@ -11,7 +8,6 @@ const firebaseConfig = {
     appId: "1:949145698632:web:1e84e215e8a862f4a3737d"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+firebase.initializeApp(firebaseConfig);
 
-export { db };
+const db = firebase.database();
