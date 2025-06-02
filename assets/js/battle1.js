@@ -30,20 +30,8 @@ const enemyImages = [
     './assets/img/enemy/enemy3.png'
   ];
 
-  const randomIndex = Math.floor(Math.random() * enemyImages.length);
-  const chosenImage = enemyImages[randomIndex];
-
-  const img = document.createElement('img');
-  img.src = chosenImage;
-  img.alt = '敵人';
-  img.id = 'enemyImg';
-  img.style.width = '40px';
-  img.style.height = '40px';
-  img.style.objectFit = 'contain';
-  img.style.display = 'block';
-
-  const enemyDiv = document.getElementById('enemy');
-  enemyDiv.insertBefore(img, enemyDiv.firstChild);
+const chosenImage = enemyImages[Math.floor(Math.random() * enemyImages.length)];
+enemy.style.backgroundImage = `url('${chosenImage}')`;
 
 async function loadPlayerData() {
     const name = localStorage.getItem("playerName");
