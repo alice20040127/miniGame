@@ -1,11 +1,3 @@
-import { db } from './firebaseConfig.js';
-import {
-  ref,
-  get,
-  set,
-  child
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
 const name = localStorage.getItem("playerName");
 if (!name) {
     alert("請先創建角色！");
