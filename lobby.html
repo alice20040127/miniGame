@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>遊戲大廳</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+    }
+    header {
+      position: relative;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: #ffd966;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #playerNameDisplay {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      user-select: none;
+    }
+    #container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    #playerPhoto {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 10px;
+      position: relative;
+    }
+    #playerNameOnPhoto {
+      position: relative;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      user-select: none;
+    }
+    button {
+      margin: 8px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+    #difficultyButtons {
+      margin-top: 20px;
+      display: none;
+    }
+    #difficultyButtons button {
+      background-color: #2196f3;
+    }
+    #difficultyButtons button:hover {
+      background-color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    遊戲大廳
+  </header>
+
+  <div id="container">
+    <img id="playerPhoto" src="/img/role/role-1.jpg" alt="玩家照片" />
+    <div id="playerNameOnPhoto">玩家名字</div>
+
+    <button id="startGameBtn">開始遊戲</button>
+    <button id="enhanceBtn">角色強化</button>
+
+    <div id="difficultyButtons">
+      <button id="easyBtn">簡單</button>
+      <button id="hardBtn">困難</button>
+    </div>
+  </div>
+  <script src="js/lobby.js"></script>
+</body>
+</html>

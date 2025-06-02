@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>角色強化</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+    }
+    header {
+      position: relative;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: #ffd966;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #coinDisplay {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #fff3b0;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    #backBtn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 6px 12px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff7043;
+      color: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      transition: background-color 0.3s;
+    }
+    #backBtn:hover {
+      background-color: #e64a19;
+    }
+    #container {
+      display: flex;
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 20px;
+      gap: 30px;
+    }
+    #leftSide {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #leftSide img {
+      max-width: 250px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    #rightSide {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .statRow {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 18px;
+    }
+    .statName {
+      flex: 1;
+    }
+    .statValue {
+      width: 80px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .enhanceBtn {
+      padding: 6px 12px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .enhanceBtn:disabled {
+      background-color: #ccc;
+      cursor: default;
+    }
+    .limitReached {
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    角色強化
+    <div id="coinDisplay">金幣: 0</div>
+    <button id="backBtn">返回大廳</button>
+  </header>
+
+  <div id="container">
+    <div id="leftSide">
+      <img src="/img/role/role-1.jpg" alt="角色圖" />
+    </div>
+    <div id="rightSide">
+      <div class="statRow" data-stat="hp">
+        <div class="statName">血量 (HP)</div>
+        <div class="statValue" id="hpValue">0</div>
+        <button class="enhanceBtn" id="hpEnhanceBtn">強化</button>
+        <div class="limitReached" id="hpLimit" style="display:none;">已到達上限</div>
+      </div>
+      <div class="statRow" data-stat="strength">
+        <div class="statName">力度 (Strength)</div>
+        <div class="statValue" id="strengthValue">0</div>
+        <button class="enhanceBtn" id="strengthEnhanceBtn">強化</button>
+        <div class="limitReached" id="strengthLimit" style="display:none;">已到達上限</div>
+      </div>
+      <div class="statRow" data-stat="damage">
+        <div class="statName">一般攻擊傷害 (Damage)</div>
+        <div class="statValue" id="damageValue">0</div>
+        <button class="enhanceBtn" id="damageEnhanceBtn">強化</button>
+        <div class="limitReached" id="damageLimit" style="display:none;">已到達上限</div>
+      </div>
+      <div class="statRow" data-stat="skillDamage">
+        <div class="statName">技能攻擊傷害 (Skill Damage)</div>
+        <div class="statValue" id="skillDamageValue">0</div>
+        <button class="enhanceBtn" id="skillDamageEnhanceBtn">強化</button>
+        <div class="limitReached" id="skillDamageLimit" style="display:none;">已到達上限</div>
+      </div>
+      <div class="statRow" data-stat="movement">
+        <div class="statName">移動量 (Movement)</div>
+        <div class="statValue" id="movementValue">0</div>
+        <button class="enhanceBtn" id="movementEnhanceBtn">強化</button>
+        <div class="limitReached" id="movementLimit" style="display:none;">已到達上限</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "你的 API KEY",
+      authDomain: "你的 authDomain",
+      databaseURL: "你的 databaseURL",
+      projectId: "你的 projectId",
+      storageBucket: "你的 storageBucket",
+      messagingSenderId: "你的 messagingSenderId",
+      appId: "你的 appId"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="js/enhance.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>戰鬥</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- 上方戰鬥牌子 -->
+    <div id="banner">戰鬥</div>
+
+    <!-- 遊戲畫面 -->
+    <div id="gameArea">
+        <div id="player">
+            <img id="playerImg" src="/img/role/role-2.jpg" alt="玩家" />
+            <div class="miniHealthBar"><div id="playerHP" class="miniHealth"></div></div>
+        </div>
+        <div id="enemy">
+            <div class="miniHealthBar"><div id="enemyHP" class="miniHealth"></div></div>
+        </div>
+        <div id="projectile"></div>
+        <div id="aimLine"></div>
+        <div id="angleDisplay">45°</div>
+    </div>
+
+    <!-- 資訊與能量條 -->
+    <div id="infoPanel">
+        <p id="status">請用滑鼠瞄準角度，長按蓄力後放開射擊！</p>
+        <div id="powerBarContainer">
+        <div id="powerBar"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
