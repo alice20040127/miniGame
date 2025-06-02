@@ -1,138 +1,143 @@
-
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background: #f0f8ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #banner {
-      width: 100%;
-      background-color: #ffcc00;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 28px;
-      font-weight: bold;
-      border-bottom: 3px solid #e0a800;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      letter-spacing: 3px;
-    }
-
-    #gameArea {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      height: 300px;
-      background: #d0e7ff;
-      border: 2px solid #3399ff;
-      margin: 20px 0;
-      overflow: hidden;
-      user-select: none;
-    }
-
-    #player, #enemy {
-      position: absolute;
-      bottom: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 5px;
-    }
-
-    #player {
-      background-color: #2e8b57;
-      left: 50px;
-      z-index: 5;
-    }
-
-    #enemy {
-      background-color: #b22222;
-      left: 450px;
-      z-index: 5;
-    }
-
-    #projectile {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: black;
-      display: none;
-      z-index: 10;
-    }
-
-    #aimLine {
-      position: absolute;
-      height: 3px;
-      background: orange;
-      display: none;
-      transform-origin: left center;
-      z-index: 8;
-    }
-
-    #angleDisplay {
-      position: absolute;
-      font-weight: bold;
-      color: #333;
-      bottom: 80px;
-      left: 100px;
-      user-select: none;
-    }
-
-    .miniHealthBar {
-      position: absolute;
-      width: 40px;
-      height: 6px;
-      background: #ccc;
-      border-radius: 3px;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      overflow: hidden;
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f0f8ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-    .miniHealth {
-      height: 6px;
-      width: 100%;
-      transition: width 0.3s ease;
-    }
+#banner {
+  width: 100%;
+  background-color: #ffcc00;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 3px solid #e0a800;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  letter-spacing: 3px;
+}
 
-    #playerHP {
-      background: #2e8b57;
-    }
+#gameArea {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  background: #d0e7ff;
+  border: 2px solid #3399ff;
+  margin: 20px 0;
+  overflow: hidden;
+  user-select: none;
+}
 
-    #enemyHP {
-      background: #b22222;
-    }
+#player, #enemy {
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}
 
-    #infoPanel {
-      max-width: 600px;
-      width: 100%;
-      margin: 0 auto;
-    }
+#player {
+  background-color: #2e8b57;
+  left: 50px;
+  z-index: 5;
+}
+#playerImg {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
 
-    #status {
-      white-space: pre-line;
-      min-height: 50px;
-      margin: 10px 0;
-      font-weight: 600;
-      color: #222;
-      text-align: center;
-    }
+#enemy {
+  background-color: #b22222;
+  left: 450px;
+  z-index: 5;
+}
 
-    #powerBarContainer {
-      width: 100%;
-      background: #bbb;
-      height: 15px;
-      border-radius: 7px;
-      overflow: hidden;
-    }
+#projectile {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: black;
+  display: none;
+  z-index: 10;
+}
 
-    #powerBar {
-      height: 15px;
-      background: orange;
-      width: 0%;
-      transition: width 0.1s linear;
-    }
+#aimLine {
+  position: absolute;
+  height: 3px;
+  background: orange;
+  display: none;
+  transform-origin: left center;
+  z-index: 8;
+}
+
+#angleDisplay {
+  position: absolute;
+  font-weight: bold;
+  color: #333;
+  bottom: 80px;
+  left: 100px;
+  user-select: none;
+}
+
+.miniHealthBar {
+  position: absolute;
+  width: 40px;
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.miniHealth {
+  height: 6px;
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+#playerHP {
+  background: #2e8b57;
+}
+
+#enemyHP {
+  background: #b22222;
+}
+
+#infoPanel {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#status {
+  white-space: pre-line;
+  min-height: 50px;
+  margin: 10px 0;
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+}
+
+#powerBarContainer {
+  width: 100%;
+  background: #bbb;
+  height: 15px;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+#powerBar {
+  height: 15px;
+  background: orange;
+  width: 0%;
+  transition: width 0.1s linear;
+}
 
