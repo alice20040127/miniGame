@@ -1,5 +1,10 @@
 import { db } from './firebaseConfig.js';
-import { ref, get, set } from 'firebase/database';
+import {
+  ref,
+  get,
+  set,
+  child
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 const player = document.getElementById("player");
 const enemy = document.getElementById("enemy");
