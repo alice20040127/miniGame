@@ -237,7 +237,7 @@ async function shoot(angle, power, dmg) {
       projectile.style.bottom = y + "px";
       let t = 0;
 
-      const interval = setInterval(() => {
+      const interval = setInterval(async () => {
         t += 0.1;
         x = startX + velocityX * t + wind * 5 * t;
         y = -4 * maxHeight / (totalTime * totalTime) * Math.pow(t - totalTime / 2, 2) + maxHeight;
