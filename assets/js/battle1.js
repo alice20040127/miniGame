@@ -228,11 +228,9 @@ async function shoot(angle, power, dmg) {
     const rad = angle * Math.PI / 180;
     const vx = power * powerScale * Math.cos(rad);
     const vy = power * powerScale * Math.sin(rad);
-    const aimRect = aimLine.getBoundingClientRect();
-    const gameAreaRect = gameArea.getBoundingClientRect();
 
-    let x = aimRect.left + aimRect.width / 2 - gameAreaRect.left;
-    let y = 40;
+    let x = player.offsetLeft + 20;
+    let y = 0;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
@@ -278,8 +276,8 @@ async function shoot(angle, power, dmg) {
 }
 
 async function fireSkillBullet() {
-    let x = parseFloat(player.style.left);
-    let y = 40;
+    let x = player.offsetLeft + 20;
+    let y = 0;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
