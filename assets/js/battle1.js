@@ -237,8 +237,9 @@ async function shoot(angle, power, dmg) {
     const rad = angle * Math.PI / 180;
     const vx = power * powerScale * Math.cos(rad);
     const vy = power * powerScale * Math.sin(rad);
-    let x = player.offsetLeft + player.offsetWidth / 2;
-    let y = player.offsetTop + player.offsetHeight / 2;
+    const startX = parseFloat(player.style.left);
+    let x = startX;
+    let y = 0;
     
     projectile.style.display = "block";
     projectile.style.left = x + "px";
