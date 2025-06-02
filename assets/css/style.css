@@ -31,28 +31,22 @@ body {
   user-select: none;
 }
 
-#player, #enemy {
+#playerTmg, #enemyImg {
   position: absolute;
   bottom: 0;
   width: 40px;
   height: 60px;
   border-radius: 5px;
-}
-
-#player {
-  background-color: #2e8b57;
-  left: 50px;
-  z-index: 5;
-}
-#playerImg {
-  width: 40px;
-  height: 60px;
   object-fit: contain;
   display: block;
 }
 
-#enemy {
-  background-color: #b22222;
+#playerImg {
+  left: 50px;
+  z-index: 5;
+}
+
+#enemyImg {
   left: 450px;
   z-index: 5;
 }
