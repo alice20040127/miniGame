@@ -166,9 +166,6 @@ gameArea.addEventListener('mousedown', (e) => {
     dragPower = 0;
     increasing = true;
 
-    aimLine.style.display = 'block';
-    angleDisplay.style.display = 'block';
-
     powerBar.style.width = '0%';
     powerBar.style.backgroundColor = "blue";
     powerBar.style.display = "block";
