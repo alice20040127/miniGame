@@ -24,6 +24,9 @@ let dragStart = null;
 let playerHasActed = false;
 let skillCooldown = 5;
 
+const roleImage = './assets/img/role/role-2.png';
+player.style.backgroundImage = url('${roleImage}')`;
+
 const enemyImages = [
     './assets/img/enemy/enemy1.png',
     './assets/img/enemy/enemy2.png',
