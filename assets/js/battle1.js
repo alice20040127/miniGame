@@ -25,7 +25,7 @@ let playerHasActed = false;
 let skillCooldown = 5;
 
 async function loadPlayerData() {
-    const snapshot = await get(ref(db, 'characters/player1'));
+    const snapshot = await db.ref('characters/player1').once('value');
     if (snapshot.exists()) {
         const data = snapshot.val();
         playerHP = data.hp;
@@ -43,12 +43,12 @@ loadPlayerData();
 setTurn(true);
 
 async function updateCoins(amount) {
-    const charRef = ref(db, 'characters/player1');
-    const snapshot = await get(charRef);
+    const charRef = db.ref('characters/player1');
+    const snapshot = await charRef.once('value');
     if (snapshot.exists()) {
         const currentData = snapshot.val();
         const newCoins = (currentData.coins || 0) + amount;
-        await set(charRef, { ...currentData, coins: newCoins });
+        await charRef.set({ ...currentData, coins: newCoins });
     }
 }
 
