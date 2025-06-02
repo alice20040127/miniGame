@@ -31,7 +31,7 @@ body {
   user-select: none;
 }
 
-#playerTmg, #enemyImg {
+#playerImg, #enemyImg {
   position: absolute;
   bottom: 0;
   width: 40px;
