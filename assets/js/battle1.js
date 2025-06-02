@@ -46,32 +46,62 @@ const enemyImages = [
   enemyDiv.insertBefore(img, enemyDiv.firstChild);
 
 async function loadPlayerData() {
-    const snapshot = await db.ref('characters/player1').once('value');
-    if (snapshot.exists()) {
+    const name = localStorage.getItem("playerName");
+    if (!name) {
+        alert("找不到登入資訊，請重新建立角色！");
+        window.location.href = "create.html";
+        return;
+    }
+
+    const playerRef = firebase.database().ref("players/" + name);
+    playerRef.once("value").then(snapshot => {
+        if (!snapshot.exists()) {
+            alert("找不到角色資料，請重新建立！");
+            window.location.href = "create.html";
+            return;
+        }
+
         const data = snapshot.val();
+        console.log("角色資料：", data);
+
+        // 將角色資料設置到遊戲參數
         playerHP = data.hp;
         powerScale = data.strength;
         damage = data.damage;
         skillDamage = data.skillDamage;
         movement = data.movement;
+
+        // 更新血量條顯示
         playerHPBar.style.width = playerHP + "%";
-    } else {
-        console.error("找不到角色資料");
-    }
+    }).catch(error => {
+        console.error("載入角色資料時出錯：", error);
+        alert("發生錯誤，請稍後再試！");
+    });
 }
 
 loadPlayerData();
 setTurn(true);
 
 async function updateCoins(amount) {
-    const charRef = db.ref('characters/player1');
+    const name = localStorage.getItem("playerName");
+    if (!name) {
+        alert("找不到登入資訊，請重新登入！");
+        window.location.href = "create.html";
+        return;
+    }
+
+    const charRef = firebase.database().ref('players/' + name);
     const snapshot = await charRef.once('value');
     if (snapshot.exists()) {
         const currentData = snapshot.val();
         const newCoins = (currentData.coins || 0) + amount;
-        await charRef.set({ ...currentData, coins: newCoins });
+        await charRef.update({ coins: newCoins });
+    } else {
+        alert("找不到角色資料，請重新建立！");
+        window.location.href = "create.html";
     }
 }
+
 
 let windDirection = "⭤";
 let windColor = "black";
