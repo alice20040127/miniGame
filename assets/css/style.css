@@ -39,16 +39,21 @@ body {
   border-radius: 5px;
   object-fit: contain;
   display: block;
+  z-index: 5;
+}
+#player, #enemy {
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 60px;
 }
 
-#playerImg {
+#player {
   left: 50px;
-  z-index: 5;
 }
 
-#enemyImg {
+#enemy {
   left: 450px;
-  z-index: 5;
 }
 
 #projectile {
