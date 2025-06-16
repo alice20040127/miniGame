@@ -15,6 +15,9 @@
     <!-- 上方戰鬥牌子 -->
     <div id="banner">戰鬥</div>
 
+    <!-- 返回按鈕 -->
+    <button id="exitBtn">退出戰鬥</button>
+    
     <!-- 遊戲畫面 -->
     <div id="gameArea">
         <div id="player">
@@ -37,5 +40,10 @@
     </div>
     <script src="./assets/js/firebaseConfig.js"></script>
     <script src="./assets/js/battle1.js"></script>
+    <script>
+        document.getElementById('exitBtn').onclick = function() {
+            window.location.href = 'lobby.html';
+        };
+    </script>
 </body>
 </html>
