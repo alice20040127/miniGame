@@ -34,7 +34,7 @@ body {
 #exitBtn {
       position: absolute;
       top: 20px;
-      left: 20px;
+      right: 20px;
       padding: 6px 12px;
       font-size: 16px;
       cursor: pointer;
@@ -44,6 +44,11 @@ body {
       color: white;
       box-shadow: 0 1px 3px rgba(0,0,0,0.15);
       transition: background-color 0.3s;
+      z-index: 10;
+}
+
+#exitBtn:hover{
+  background-color: #e64a19;
 }
 
 #player, #enemy {
