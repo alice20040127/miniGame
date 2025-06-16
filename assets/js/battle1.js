@@ -20,6 +20,7 @@ let playerHP = 100;
 let wind = (Math.random() * 2 - 1).toFixed(2);
 let isPlayerTurn = true;
 let enemyHP = [100, 110, 120, 130, 140, 150][Math.floor(Math.random() * 6)];
+const enemyMaxHP = enemyHP;
 let dragStart = null;
 let playerHasActed = false;
 let skillCooldown = 5;
@@ -294,7 +295,7 @@ async function fireSkillBullet() {
             projectile.style.display = "none";
             enemyHP -= skillDamage;
             showDamage(document.getElementById('enemy'), skillDamage);
-            enemyHPBar.style.width = Math.max(0, enemyHP) + "%";
+            enemyHPBar.style.width = (Math.max(0, enemyHP)/enemyMaxHP*100) + "%";
             if (enemyHP <= 0) {
                 status.innerText = "你贏了！敵人被技能擊敗！獲得 15 金幣！";
                 await updateCoins(15);
