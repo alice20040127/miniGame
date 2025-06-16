@@ -20,7 +20,6 @@ let playerHP = 100;
 let wind = (Math.random() * 2 - 1).toFixed(2);
 let isPlayerTurn = true;
 let enemyHP = [100, 110, 120, 130, 140, 150][Math.floor(Math.random() * 6)];
-const enemyMaxHP = enemyHP;
 let dragStart = null;
 let playerHasActed = false;
 let skillCooldown = 5;
@@ -282,12 +281,20 @@ async function fireSkillBullet() {
     projectile.style.left = x + "px";
     projectile.style.bottom = y + "px";
     let vx = 10;
+    let t = 0;
+
     const interval = setInterval(async () => {
         x += vx;
+        // y 不變，技能子彈只水平飛行
         projectile.style.left = x + "px";
+        projectile.style.bottom = y + "px";
 
-        const dx = x - (parseFloat(enemy.style.left) + 20);
-        const dy = y - 20;
+        // 取得敵人座標
+        const enemyX = parseFloat(enemy.style.left) + 20;
+        const enemyY = 40; // 假設敵人底部與子彈同高
+
+        const dx = x - enemyX;
+        const dy = y - enemyY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < 20) {
@@ -295,13 +302,13 @@ async function fireSkillBullet() {
             projectile.style.display = "none";
             enemyHP -= skillDamage;
             showDamage(document.getElementById('enemy'), skillDamage);
-            enemyHPBar.style.width = (Math.max(0, enemyHP)/enemyMaxHP*100) + "%";
+            enemyHPBar.style.width = Math.max(0, enemyHP) + "%";
             if (enemyHP <= 0) {
                 status.innerText = "你贏了！敵人被技能擊敗！獲得 15 金幣！";
                 await updateCoins(15);
                 setTimeout(() => {window.location.href = "lobby.html";}, 3000);
                 return;
-            }else{
+            } else {
                 status.innerText = `技能命中！敵人損失 ${skillDamage} HP！`;
                 setTimeout(() => setTurn(false), 1000);
             }
